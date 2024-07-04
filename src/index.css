@@ -1,0 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Playball&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	font-family: "Raleway", sans-serif;
+}
+
+.custom-shadow {
+	box-shadow: -2px 2px 0px #000000;
+}
+
+@keyframes flash {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes border-flash {
+	0% {
+		border-color: white;
+	}
+	50% {
+		border-color: transparent;
+	}
+	100% {
+		border-color: white;
+	}
+}
+
+.flash {
+	animation: flash 0.4s linear 3;
+}
+
+.border-flash {
+	animation: border-flash 0.4s linear 3;
+}
