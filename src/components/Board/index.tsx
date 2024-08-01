@@ -1,35 +1,18 @@
-import { useEffect } from "react";
-import { useBoardPositions, useGameStoreActions } from "../../store/Game";
-import { getWinningPositions } from "../../utils/helper";
+import { FC } from "react";
+import { IPlayer } from "../../store/Game";
 import { Tile } from "../Tile";
 
-const Board = () => {
-	const boardPositions = useBoardPositions();
-	const { setWinner, setwinningPattern, updateScore, nextGame } =
-		useGameStoreActions();
+interface BoardProps {
+	positions: IPlayer[];
+}
 
-	useEffect(() => {
-		let timeout: ReturnType<typeof setTimeout>;
-		const { winner, winningPattern } = getWinningPositions(boardPositions);
-		setWinner(winner);
-		setwinningPattern(winningPattern);
-
-		if (winner) {
-			updateScore();
-			timeout = setTimeout(() => {
-				nextGame();
-			}, 2000);
-		}
-
-		return () => clearTimeout(timeout);
-	}, [boardPositions, nextGame, setWinner, setwinningPattern, updateScore]);
-
+const Board: FC<BoardProps> = ({ positions }) => {
 	return (
 		<div className="grid grid-cols-3 grid-rows-3">
-			{boardPositions.map((_, i) => (
+			{positions.map((_, i) => (
 				<Tile
 					key={i}
-					move={boardPositions[i]}
+					move={positions[i]}
 					position={i}
 				/>
 			))}

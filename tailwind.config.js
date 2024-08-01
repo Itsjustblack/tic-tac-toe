@@ -6,6 +6,7 @@ export default {
 			fontFamily: {
 				playball: ["Playball", "cursive"],
 				mochiy: ["Mochiy Pop One", "sans-serif"],
+				openSans: ["Open Sans", "serif"],
 			},
 		},
 	},

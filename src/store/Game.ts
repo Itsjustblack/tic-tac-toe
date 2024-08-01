@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
@@ -5,13 +6,16 @@ export type IPlayer = "X" | "O" | "";
 
 type GameStoreActions = {
 	actions: {
-		nextPlayer: () => void;
-		updatePosition: (index: number) => void;
-		updateScore: () => void;
-		setwinningPattern: (pattern: Array<number> | null) => void;
-		setWinner: (winner: IPlayer | null) => void;
+		onGameWon: (
+			winner: IPlayer | null,
+			pattern: Array<number> | null,
+			scores: { X: number; O: number; Tie: number }
+		) => void;
 		resetGame: () => void;
-		nextGame: () => void;
+		setRoom: (room: string) => void;
+		setPlayer: (player: "X" | "O") => void;
+		setPositions: (newPositions: Array<IPlayer>) => void;
+		startNewRound: () => void;
 	};
 };
 
@@ -19,74 +23,59 @@ type GameStoreState = {
 	scores: {
 		X: number;
 		O: number;
-		tie: number;
+		Tie: number;
 	};
-	currentPlayer: IPlayer;
 	winner: IPlayer | null;
-	boardPositions: Array<IPlayer>;
 	winningPattern: Array<number> | null;
+	room: string;
+	player: "X" | "O";
+	positions: Array<IPlayer> | null;
 };
 
 const initialState: GameStoreState = {
 	scores: {
 		X: 0,
 		O: 0,
-		tie: 0,
+		Tie: 0,
 	},
-	currentPlayer: "X",
 	winner: null,
-	boardPositions: ["", "", "", "", "", "", "", "", ""],
 	winningPattern: null,
+	room: "",
+	player: "X",
+	positions: null,
 };
 
 const useGameStore = create<GameStoreState & GameStoreActions>()(
 	devtools((set) => ({
 		...initialState,
 		actions: {
-			updatePosition: (index) =>
-				set((state) => {
-					if (state.boardPositions[index] || state.winner) return state;
-
-					const newBoard = [...state.boardPositions];
-					newBoard[index] = state.currentPlayer;
-
-					return { boardPositions: newBoard };
-				}),
-			nextPlayer: () =>
-				set((state) => ({
-					currentPlayer: state.currentPlayer == "X" ? "O" : "X",
-				})),
-			setwinningPattern: (pattern) => set(() => ({ winningPattern: pattern })),
-			updateScore: () =>
-				set((state) => {
-					if (state.winner !== null) {
-						const key =
-							state.winner === "X" || state.winner === "O"
-								? state.winner
-								: "tie";
-						return {
-							scores: { ...state.scores, [key]: state.scores[key] + 1 },
-						};
-					}
-					return state;
-				}),
-			setWinner: (winner) => set(() => ({ winner })),
 			resetGame: () => set(initialState),
-			nextGame: () =>
-				set((state) => ({
-					...state,
-					boardPositions: initialState.boardPositions,
+			setPositions: (positions) => set({ positions }),
+			setRoom: (room) => set({ room }),
+			setPlayer: (player) => set({ player }),
+			onGameWon: (winner, pattern, scores) =>
+				set(() => {
+					if (winner !== null) {
+						if (winner) toast.success(`Player ${winner} Won`);
+						else toast.success(`Game Drawed`);
+					}
+
+					return { winner, scores, winningPattern: pattern };
+				}),
+			startNewRound: () =>
+				set({
+					positions: Array(9).fill(""),
 					winner: null,
-					currentPlayer: "X",
 					winningPattern: null,
-				})),
+				}),
 		},
 	}))
 );
 
-export const useCurrentPlayer = () => useGameStore((s) => s.currentPlayer);
+export const usePlayer = () => useGameStore((s) => s.player);
+export const usePositions = () => useGameStore((s) => s.positions);
+export const useRoom = () => useGameStore((s) => s.room);
 export const useScores = () => useGameStore((s) => s.scores);
 export const useWinner = () => useGameStore((s) => s.winner);
-export const useBoardPositions = () => useGameStore((s) => s.boardPositions);
 export const useWinningPattern = () => useGameStore((s) => s.winningPattern);
 export const useGameStoreActions = () => useGameStore((s) => s.actions);

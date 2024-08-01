@@ -12,7 +12,7 @@ const Loader = () => {
 			duration: 3,
 			ease: cubicBezier(0, 0.7, 0.99, 0.34),
 			onUpdate: (latest) => setPercentage(Math.floor(latest)),
-			onComplete: () => setTimeout(() => navigate("/game"), 1500),
+			onComplete: () => setTimeout(() => navigate("/create"), 1200),
 		});
 
 		return () => controls.stop();
