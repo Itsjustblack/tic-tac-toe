@@ -1,15 +1,15 @@
 import { useContext } from "react";
+import { useRoom } from "../../store/Game";
 import { SocketContext } from "../SocketProvider";
-import { useNavigate } from "react-router-dom";
 
 const EndGame = () => {
 	const { socket } = useContext(SocketContext);
-
-	const navigate = useNavigate();
+	const room = useRoom();
 
 	const exitGame = () => {
-		socket.emit("end_game");
-		navigate("/create");
+		setTimeout(() => {
+			socket.emit("end_game", room);
+		}, 1000);
 	};
 	return (
 		<button

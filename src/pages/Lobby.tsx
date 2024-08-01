@@ -11,8 +11,9 @@ const Lobby = () => {
 	const { room } = useParams();
 
 	const exitGame = () => {
-		socket.emit("end_game");
-		navigate("/create");
+		setTimeout(() => {
+			socket.emit("end_game", room);
+		}, 1000);
 	};
 
 	useEffect(() => {

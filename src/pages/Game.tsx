@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Board from "../components/Board";
 import Container from "../components/Container";
 import EndGame from "../components/EndGame";
@@ -11,6 +11,7 @@ import { IPlayer, useGameStoreActions, usePositions } from "../store/Game";
 
 const Game = () => {
 	const { socket } = useContext(SocketContext);
+	const navigate = useNavigate();
 
 	const positions = usePositions();
 
@@ -28,6 +29,10 @@ const Game = () => {
 		socket.on("new_round", (round) => {
 			startNewRound();
 			toast.success(`Round ${round}`);
+		});
+
+		socket.on("game_over", () => {
+			navigate("/create");
 		});
 	}, []);
 
