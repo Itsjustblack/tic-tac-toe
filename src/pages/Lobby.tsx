@@ -10,6 +10,11 @@ const Lobby = () => {
 	const { socket } = useContext(SocketContext);
 	const { room } = useParams();
 
+	const exitGame = () => {
+		socket.emit("end_game");
+		navigate("/create");
+	};
+
 	useEffect(() => {
 		socket.on("joined_room", () => {
 			toast.success("Player Joined Room");
@@ -34,11 +39,15 @@ const Lobby = () => {
 				transition={{ duration: 0.5, ease: "easeIn" }}
 				className="max-w-[500px] w-full bg-white rounded-xl p-10"
 			>
-				<h1 className="text-3xl font-bold sm:text-4xl flex gap-x-2 items-center">
-					Game ID: <span className="font-medium text-2xl">{room}</span>
-				</h1>
+				<div className="flex gap-x-2 items-center">
+					<h1 className="text-2xl font-bold sm:text-4xl">Game ID:</h1>
+					<p className="font-medium text-2xl sm:text-4xl">{room}</p>
+				</div>
 				<div className="flex items-center gap-y-3 flex-col my-3">
-					<p className="text-center text-xl font-semibold">You are Player O</p>
+					<p className="text-center text-xl font-semibold flex items-center gap-x-2">
+						You are Player
+						<span className="text-4xl font-bold">O</span>
+					</p>
 					<img
 						className="h-full object-cover w-14"
 						src="/assets/loader.svg"
@@ -48,8 +57,8 @@ const Lobby = () => {
 					</p>
 				</div>
 				<button
-					type="submit"
-					onClick={() => navigate("/create")}
+					type="button"
+					onClick={exitGame}
 					className="flex h-[47px] w-full items-center justify-center rounded-lg bg-black py-1 text-center text-lg font-semibold text-white"
 				>
 					Quit Game
