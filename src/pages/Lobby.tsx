@@ -63,7 +63,7 @@ const Lobby = () => {
 					<h1 className="text-2xl font-bold sm:text-4xl">Game ID:</h1>
 					<p className="font-medium text-2xl sm:text-4xl">{room}</p>
 					<img
-						onClick={() => handleCopy("room")}
+						onClick={() => handleCopy(room)}
 						className="size-7 cursor-pointer animate-pulse"
 						src="/assets/copy.svg"
 						alt=""
