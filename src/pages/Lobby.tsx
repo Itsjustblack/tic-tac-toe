@@ -1,26 +1,45 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { motion } from "framer-motion";
 import { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Container from "../components/Container";
 import { SocketContext } from "../components/SocketProvider";
+import { useCopyToClipboard } from "usehooks-ts";
 
 const Lobby = () => {
 	const navigate = useNavigate();
 	const { socket } = useContext(SocketContext);
 	const { room } = useParams();
+	const [, copy] = useCopyToClipboard();
+
+	let id = 1;
 
 	const exitGame = () => {
-		setTimeout(() => {
+		id = setTimeout(() => {
 			socket.emit("end_game", room);
 		}, 1000);
 	};
 
+	const handleCopy = (text: string) => {
+		copy(text)
+			.then(() => {
+				toast.dismiss();
+				toast.success("Copied to clipboard");
+			})
+			.catch((error) => {
+				toast.success(error?.message);
+			});
+	};
+
 	useEffect(() => {
 		socket.on("joined_room", () => {
+			toast.dismiss();
 			toast.success("Player Joined Room");
 			navigate("/game");
 		});
+
+		return () => clearInterval(id);
 	}, []);
 
 	if (!room)
@@ -43,11 +62,17 @@ const Lobby = () => {
 				<div className="flex gap-x-2 items-center">
 					<h1 className="text-2xl font-bold sm:text-4xl">Game ID:</h1>
 					<p className="font-medium text-2xl sm:text-4xl">{room}</p>
+					<img
+						onClick={() => handleCopy("room")}
+						className="size-7 cursor-pointer animate-pulse"
+						src="/assets/copy.svg"
+						alt=""
+					/>
 				</div>
 				<div className="flex items-center gap-y-3 flex-col my-3">
 					<p className="text-center text-xl font-semibold flex items-center gap-x-2">
 						You are Player
-						<span className="text-4xl font-bold">O</span>
+						<span className="text-4xl font-bold">X</span>
 					</p>
 					<img
 						className="h-full object-cover w-14"

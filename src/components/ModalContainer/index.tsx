@@ -9,7 +9,7 @@ interface ModalContainerProps {
 }
 
 const ModalContainer: FC<ModalContainerProps> = ({ children }) => {
-	const { isOpen, toggleModal } = useModal();
+	const { isOpen } = useModal();
 	return (
 		<>
 			{createPortal(
@@ -21,7 +21,6 @@ const ModalContainer: FC<ModalContainerProps> = ({ children }) => {
 							exit={{ opacity: 0 }}
 							transition={{ duration: 0.2 }}
 							className="pointer-events-auto fixed bottom-0 top-0 z-50 w-full bg-black"
-							onClick={() => toggleModal(false)}
 						>
 							<Container className="overflow-hidden flex flex-col justify-center items-center h-screen">
 								{children}

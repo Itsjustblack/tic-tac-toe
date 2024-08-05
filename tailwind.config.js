@@ -7,6 +7,7 @@ export default {
 				playball: ["Playball", "cursive"],
 				mochiy: ["Mochiy Pop One", "sans-serif"],
 				openSans: ["Open Sans", "serif"],
+				poppins: ["Poppins", "serif"],
 			},
 		},
 	},

@@ -1,4 +1,3 @@
-import toast from "react-hot-toast";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
@@ -27,7 +26,7 @@ type GameStoreState = {
 	};
 	winner: IPlayer | null;
 	winningPattern: Array<number> | null;
-	room: string;
+	room: string | null;
 	player: "X" | "O";
 	positions: Array<IPlayer> | null;
 };
@@ -40,7 +39,7 @@ const initialState: GameStoreState = {
 	},
 	winner: null,
 	winningPattern: null,
-	room: "",
+	room: null,
 	player: "X",
 	positions: null,
 };
@@ -54,14 +53,7 @@ const useGameStore = create<GameStoreState & GameStoreActions>()(
 			setRoom: (room) => set({ room }),
 			setPlayer: (player) => set({ player }),
 			onGameWon: (winner, pattern, scores) =>
-				set(() => {
-					if (winner !== null) {
-						if (winner) toast.success(`Player ${winner} Won`);
-						else toast.success(`Game Drawed`);
-					}
-
-					return { winner, scores, winningPattern: pattern };
-				}),
+				set(() => ({ winner, scores, winningPattern: pattern })),
 			startNewRound: () =>
 				set({
 					positions: Array(9).fill(""),

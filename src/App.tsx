@@ -3,6 +3,7 @@ import CreateGame from "./pages/CreateGame";
 import Game from "./pages/Game";
 import Lobby from "./pages/Lobby";
 import Loader from "./pages/loader";
+import NewRoundModal from "./components/NewRoundModal";
 
 function App() {
 	return (
@@ -25,7 +26,7 @@ function App() {
 					element={<Game />}
 				/>
 			</Routes>
-			{/* <NewRoundModal /> */}
+			<NewRoundModal />
 		</main>
 	);
 }

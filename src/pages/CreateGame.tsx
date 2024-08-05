@@ -29,6 +29,7 @@ const CreateGame = () => {
 		});
 
 		socket.on("new_game", (positions): void => {
+			toast.dismiss();
 			toast.success("Player Joined Room");
 			setPositions(positions);
 			navigate("/game");
@@ -37,7 +38,7 @@ const CreateGame = () => {
 
 	return (
 		<Container className="h-screen w-screen overflow-hidden flex flex-col justify-center items-center bg-black">
-			<section className="max-w-[500px] w-full bg-white rounded-xl p-10">
+			<section className="max-w-[500px] w-full bg-white rounded-xl p-8 sm:p-10">
 				<h1 className="text-2xl font-bold sm:text-4xl">
 					Create or Join a Game
 				</h1>

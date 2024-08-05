@@ -3,7 +3,7 @@ import { FC, ReactNode, createContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Socket, io } from "socket.io-client";
 
-const URL = "http://localhost:3000";
+const URL = import.meta.env.VITE_SERVER_URL;
 
 interface ISocketContext {
 	socket: Socket;
