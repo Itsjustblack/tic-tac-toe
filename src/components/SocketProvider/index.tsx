@@ -3,7 +3,7 @@ import { FC, ReactNode, createContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Socket, io } from "socket.io-client";
 
-const URL = import.meta.env.VITE_SERVER_URL;
+const URL = "https://tic-tac-toe-nestjs.onrender.com";
 
 interface ISocketContext {
 	socket: Socket;
